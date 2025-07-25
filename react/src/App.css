@@ -1,0 +1,417 @@
+.w1{
+  width: 100%;
+}
+
+.w075{
+  width: 75%;
+}
+
+.w050{
+  width: 50%;
+}
+.c12{
+  width: 100%;
+}
+.c11{
+  width: 91.6%;
+}
+.c10{
+  width: 83.3%;
+}
+.c9{
+  width: 75%;
+}
+.c8{
+  width: 66.6%;
+}
+.c7{
+  width: 58.3%;
+}
+.c6{
+  width: 50%;
+}
+.c5{
+  width: 41.6%;
+}
+.c4{
+  width: 33.3%;
+}
+.c3{
+  width: 25%;
+}
+.c2{
+  width: 16.6%;
+}
+.c1{
+  width: 8.3%;
+}
+.wm1000{
+  max-width: 1000px;
+}
+.wm600{
+  max-width: 600px;
+}
+.wm400{
+  max-width: 400px;
+}
+
+.h1{
+  height: 100%;
+}
+.h090{
+  height: 90%;
+}
+.h075{
+  height: 75%;
+}
+.h060{
+  height: 60%;
+}
+.h050{
+  height: 50%;
+}
+.h020{
+  height: 20%;
+}
+.h015{
+  height: 15%;
+}
+.h010{
+  height: 10%;
+}
+.h005{
+  height: 5%;
+}
+.hm600{
+  max-height: 600px;
+}
+.h400{
+  height: 400px;
+}
+.h300{
+  height: 300px;
+}
+.h40{
+  height: 40px;
+}
+.ha{
+  height: auto;
+}
+
+
+.gap005{
+  gap: 5%;
+}
+.gap004{
+  gap: 4%;
+}
+.gap20{
+  gap: 20px;
+}
+.gap10{
+  gap: 10px;
+}
+.dc{
+  display: contents;
+}
+.df{
+  display: flex;
+}
+.fww{
+  flex-wrap: wrap;
+}
+
+.ac{
+  align-items: center;
+}
+
+.ae{
+  align-items: end;
+}
+
+.jcc{
+  justify-content: center;
+}
+
+.jcsb{
+  justify-content: space-between;
+}
+
+.jcsa{
+  justify-content: space-around;
+}
+
+.jcse{
+  justify-content: space-evenly;
+}
+
+.fdr{
+  flex-direction: row;
+}
+
+.fdc{
+  flex-direction: column;
+}
+
+.t0{
+  top: 0;
+}
+.t010{
+  top: 10%;
+}
+
+.l0{
+  left: 0;
+}
+
+.mleft2{
+  margin-left: 16.6%;
+}
+
+.r0{
+  right: 0;
+}
+
+.b0{
+  bottom: 0;
+}
+
+.b010{
+  bottom:  10%;
+}
+.z2{
+ z-index: 2;
+}
+
+.pr{
+  position: relative;
+}
+
+.pa{
+  position: absolute;
+}
+
+.ofc{
+  object-fit: contain;
+}
+
+.off {
+  object-fit: fill;
+}
+
+.bsbb{
+  box-sizing: border-box;
+}
+.p10{
+  padding: 10px;
+}
+.pl10{
+  padding-left: 10px;
+}
+
+.br10{
+  border-radius: 10px;
+}
+
+.brr10{
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.brl10{
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+}
+.brt10{
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.brb10{
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.mt0066{
+  margin-top: 6.6%;
+}
+.mt005{
+  margin-top: 5%;
+}
+.mt010, .mt01{
+  margin-top: 10%;
+}
+.fs15{
+  font-size: 1.5rem;
+}
+.fs2{
+  font-size: 2rem;
+}
+.body{
+  width: 100vw;
+  height: 100vh;
+}
+.bnone{
+  border: none;
+}
+.bcb{
+  background-color: blue;
+}
+.link{
+  color: #007BFF;
+}
+.cinza{
+  background-color: #cccccc;
+}
+.verde-button{
+  background-color: #00D990;
+}
+.vermelho{
+  background-color: #aa0000;
+}
+.cblack{
+  color: #000000;
+}
+@media (max-width: 768px) {
+
+  .cm12{
+    width: 100%;
+  }
+  .cm11{
+    width: 91.6%;
+  }
+  .cm10{
+    width: 83.3%;
+  }
+  .cm9{
+    width: 75%;
+  }
+  .cm8{
+    width: 66.6%;
+  }
+  .cm7{
+    width: 58.3%;
+  }
+  .cm6{
+    width: 50%;
+  }
+  .cm5{
+    width: 41.6%;
+  }
+  .cm4{
+    width: 33.3%;
+  }
+  .cm3{
+    width: 25%;
+  }
+  .cm2{
+    width: 16.6%;
+  }
+  .cm1{
+    width: 8.3%;
+  }
+  .brmid10{
+    border-radius: 10px;
+  }
+}
+
+@media (max-width: 576px){
+
+  .tln{
+    display: none;
+  }
+  .cl12{
+    width: 100%;
+  }
+  .cl11{
+    width: 91.6%;
+  }
+  .cl10{
+    width: 83.3%;
+  }
+  .cl9{
+    width: 75%;
+  }
+  .cl8{
+    width: 66.6%;
+  }
+  .cl7{
+    width: 58.3%;
+  }
+  .cl6{
+    width: 50%;
+  }
+  .cl5{
+    width: 41.6%;
+  }
+  .cl4{
+    width: 33.3%;
+  }
+  .cl3{
+    width: 25%;
+  }
+  .cl2{
+    width: 16.6%;
+  }
+  .cl1{
+    width: 8.3%;
+  }
+  .hl13{
+    height: 130%;
+  }
+  .hl12{
+    height: 120%;
+  }
+  .hl11{
+    height: 110%;
+  }
+  .hl090{
+    height: 90%;
+  }
+  .hl050{
+    height: 50%;
+  }
+  .hl040{
+    height: 40%;
+  }
+  .hl32{
+    height: 32%;
+  }
+  .hl030{
+    height: 30%;
+  }
+  .hl025{
+    height: 25%;
+  }
+  .hl020{
+    height: 20%;
+  }
+  .hl008{
+    height: 8%;
+  }
+  .hl600{
+    height: 600px;
+  }
+  .hl500{
+    height: 500px;
+  }
+  .hl400{
+    height: 400px;
+  }
+  .mtl005{
+    margin-top: 5%;
+  }
+  .mtl10{
+    margin-top: 10px;
+  }
+  .bscb{
+    box-sizing: content-box;
+  }
+  .brlow10{
+    border-radius: 10px;
+  }
+  .fdclow{
+    flex-direction: column;
+  }
+  .jcsbl{
+    justify-content: space-between;
+  }
+}
