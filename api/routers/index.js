@@ -6,16 +6,7 @@ const propriedades = require("../controllers/propriedades");
 const animais = require("../controllers/animais");
 
 
-router.post("/usuarios", usuarios.Cadastro);
-router.put("/usuarios/:id", usuarios.Editar);
-router.delete("/usuarios/:id", usuarios.Deletar);
 
-router.get("/propriedades/:usu_id", propriedades.ListarTodas)
-router.post("/propriedades", propriedades.Cadastro);
-router.put("/propriedades/:id", propriedades.Editar);
-router.delete("/propriedades/:id", propriedades.Deletar);
-
-//API REST
 
 /*
     USUARIOS
@@ -24,13 +15,32 @@ router.delete("/propriedades/:id", propriedades.Deletar);
 //LOGIN
 router.post("/login", usuarios.Login);
 
+//CADASTRAR USUARIOS
+router.post("/usuarios", usuarios.Cadastro);
+
+//EDITAR USUARIOS
+router.put("/usuarios/:usu_id", usuarios.Editar);
+
+//DELETAR USUARIOS
+router.delete("/usuarios/:usu_id", usuarios.Deletar);
+
 
 /*
     PROPRIEDADES
 */
 
-//SELECIONA OS ANIMAIS DE UMA PROPRIEDADE
-router.get("/propriedades/:pro_id/animais", propriedades.SelectPropriedadesAnimais);
+//SELECIONA AS PROPRIEDADES DE UM USUARIO
+router.get("/usuarios/:usu_id/propriedades", propriedades.SelectUsuariosPropriedades);
+
+//CADASTRAR PRORPIEDADES
+router.post("/propriedades", propriedades.Cadastro);
+
+//EDITAR PROPRIEDADES
+router.put("/propriedades/:pro_id", propriedades.Editar);
+
+
+//DELETAR PROPRIEDADES
+router.delete("/propriedades/:pro_id", propriedades.Deletar);
 
 
 /*
@@ -39,6 +49,9 @@ router.get("/propriedades/:pro_id/animais", propriedades.SelectPropriedadesAnima
 
 //CADASTRAR ANIMAIS
 router.post("/animais", animais.Cadastro);
+
+//SELECIONA OS ANIMAIS DE UMA PROPRIEDADE
+router.get("/propriedades/:pro_id/animais", animais.SelectPropriedadesAnimais);
 
 //EDITAR ANIMAIS
 router.put("/animais/:ani_id", animais.Editar);

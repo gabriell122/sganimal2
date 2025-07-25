@@ -38,44 +38,11 @@ module.exports = {
         }
     },
 
-    //LISTA OS ANIMAIS DE UMA PROPRIEDADE
-    async SelectPropriedadesAnimais(request, response) {
-        try{
-            const {pro_id} = request.params;
-
-            //VERIFICA OS CAMPOS OBRIGATORIOS
-            if(!pro_id){
-                //CAMPO NULO
-                return response.status(400).json({
-                    confirma: false,
-                    message: "campo nulo",
-                })
-            }
-
-            //SELECIONA TODOS OS ANIMAIS DE UMA PROPRIEDADE
-            const res = await db.query( propriedades.selectPropriedadesAnimais, [pro_id]);
-
-            //RETORNA SUSCESO
-            return response.status(200).json({
-                confirma:true,
-                message: "susceso",
-                res:res
-            })
-
-        } catch (error) {
-            //RETORNA ERROS NÃO TRATADOS
-            return response.status(500).json({
-                message:"erro",
-                error: error
-            })
-        }
-    },
-
     //LISTA PROPRIEDADE UNICA ID
 
 
     //SUAS PROPRIEDADES
-    async ListarTodas(request, response){
+    async SelectUsuariosPropriedades(request, response){
         try {
             const {usu_id} = request.params;
             console.log(usu_id);
@@ -113,9 +80,9 @@ module.exports = {
     async Editar(request, response){
         try {
             const { nome, descricao, endereco } = request.body;
-            const { id } = request.params;
+            const { pro_id } = request.params;
             //VERIFICA OS CAMPOS OBRIGATORIOS
-            if(!( id && nome && descricao && endereco)){
+            if(!( pro_id && nome && descricao && endereco)){
                 //CAMPO NULO
                 return response.status(400).json({
                     confirma: false,
@@ -124,7 +91,7 @@ module.exports = {
             }
 
             //EDITA A PROPRIEDADE DO USUARIO
-            const res = await db.query( propriedades.update, [ nome, descricao, endereco, id])
+            const res = await db.query( propriedades.update, [ nome, descricao, endereco, pro_id])
 
             //RETORNA SUSCESO
             return response.status(200).json({
@@ -145,9 +112,9 @@ module.exports = {
     //DELETAR PROPRIEDADE
     async Deletar(request, response){
         try {
-            const { id } = request.params;
+            const { pro_id } = request.params;
             //VERIFICA OS CAMPOS OBRIGATORIOS
-            if(!id){
+            if(!pro_id){
                 //CAMPO NULO
                 return response.status(400).json({
                     confirma: false,
@@ -156,7 +123,7 @@ module.exports = {
             }
 
             //DELETA A PROPRIEDADE DO USUARIO
-            const res = await db.query( propriedades.delete, [ id ])
+            const res = await db.query( propriedades.delete, [ pro_id ])
 
             //RETORNA SUSCESO
             return response.status(200).json({

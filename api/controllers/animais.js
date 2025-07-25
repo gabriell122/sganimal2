@@ -37,7 +37,39 @@ module.exports = {
         }
     },
 
-    
+    //LISTA OS ANIMAIS DE UMA PROPRIEDADE
+    async SelectPropriedadesAnimais(request, response) {
+        try{
+            const {pro_id} = request.params;
+
+            //VERIFICA OS CAMPOS OBRIGATORIOS
+            if(!pro_id){
+                //CAMPO NULO
+                return response.status(400).json({
+                    confirma: false,
+                    message: "campo nulo",
+                })
+            }
+
+            //SELECIONA TODOS OS ANIMAIS DE UMA PROPRIEDADE
+            const res = await db.query( propriedades.selectPropriedadesAnimais, [pro_id]);
+
+            //RETORNA SUSCESO
+            return response.status(200).json({
+                confirma:true,
+                message: "susceso",
+                res:res
+            })
+
+        } catch (error) {
+            //RETORNA ERROS NÃO TRATADOS
+            return response.status(500).json({
+                message:"erro",
+                error: error
+            })
+        }
+    },
+
 
     //EDITAR ANIMAL
     async Editar(request, response){

@@ -14,55 +14,51 @@ module.exports = {
             
             //RECEBE OS DADOS
             const { email, senha } = request.body;
-            
+
             //VERIFICA OS CAMPOS OBRIGATORIOS
-            if ( email && senha ) {
-                
-                //VERIFICA O EMAIL E BUSCA O HASH
-                const resHash = await db.query( usuarios.login, [email]);
-
-                //VALIDA RESPOSTA
-                if (resHash[0][0]) {
-
-                    //VERIFICA A SENHA COM HASH
-                    const resValidada =  await verificarSenha( senha, resHash[0][0].usu_senha );
-
-                    //VALIDA A RESPOSTA
-                    if (resValidada) {
-                        const resUsuario =  await db.query( usuarios.dados, resHash[0][0].usu_id);
-
-                        //GERAR TOKEN JWT
-                        const token = gerarToken(resUsuario[0][0]);
-                        
-                        //SUSCESO
-                        return response.status(200).json({
-                            confirma:true,
-                            message: "susceso",
-                            res:resUsuario[0][0],
-                            token: token
-                        })
-                    } else {
-                        //SENHA INVALIDO
-                        return response.status(401).json({
-                            confirma: false,
-                            message: "senha invalida",
-                        })
-                    }
-
-                }else{
-                    //EMAIL INVALIDO
-                    return response.status(404).json({
-                    confirma: false,
-                    message: "email invalido",
-                })
-                }
-            }else{
+            if(!(email && senha)){
                 //CAMPO NULO
                 return response.status(400).json({
                     confirma: false,
                     message: "campo nulo",
                 })
             }
+
+            //VERIFICA O EMAIL E BUSCA O HASH
+            const resHash = await db.query( usuarios.login, [email]);
+            if(!resHash[0][0]){
+                //EMAIL INVALIDO
+                return response.status(404).json({
+                    confirma: false,
+                    message: "email invalido",
+                })
+            }
+
+            //VERIFICA A SENHA COM HASH
+            const resValidada =  await verificarSenha( senha, resHash[0][0].usu_senha );
+
+            //VALIDA A RESPOSTA
+            if(!resValidada){
+                //SENHA INVALIDO
+                return response.status(401).json({
+                    confirma: false,
+                    message: "senha invalida",
+                })
+            }
+
+            //BUSCA OS DADOS DO USUARIO
+            const resUsuario =  await db.query( usuarios.dados, resHash[0][0].usu_id);
+            
+            //GERAR TOKEN JWT
+            const token = gerarToken(resUsuario[0][0]);
+            
+            //SUSCESO
+            return response.status(200).json({
+                confirma:true,
+                message: "susceso",
+                res:resUsuario[0][0],
+                token: token
+            })
 
         } catch (error) {
             //RETORNA ERROS NÃO TRATADOS
@@ -130,17 +126,17 @@ module.exports = {
 
             //RECEBE OS DADOS
             const { nome, email, telefone, foto} = request.body;
-            const { id } = request.params;
+            const { usu_id } = request.params;
             const token = request.headers["authorization"];
             
             //VERIFICA CAMPOS OBRIGATORIOS
-            if ( id && token && nome && email) {
+            if ( usu_id && token && nome && email) {
                 
                 //VERIFICA O TOKEN
                 const user = verificarToken(token);
                 
                 //VERIFICA O TOKEN E SE O USUÁRIO DO TOKEN É O USUÁRIO QUE ESTA ALTERANDO O DADO
-                if ( user &&  user.usu_id == id ) {
+                if ( user &&  user.usu_id == usu_id ) {
                     //VALIDAÇÃO DO EMAIL
                     if ( !(user.usu_email == email)) {
                         const resEmail = await db.query( usuarios.email, [email]);
@@ -153,7 +149,7 @@ module.exports = {
                     }
 
                     //EDITA O USUÁRIO
-                    const editar = await db.query( usuarios.editar, [ nome, email, telefone??null, foto??null , id]);
+                    const editar = await db.query( usuarios.editar, [ nome, email, telefone??null, foto??null , usu_id]);
                     
                     //SUSCESO
                     return response.status(200).json({
@@ -191,20 +187,20 @@ module.exports = {
         try {
             
             //RECEBE OS DADOS
-            const { id } = request.params;
+            const { usu_id } = request.params;
             const token = request.headers["authorization"];
 
             //VERIFICA CAMPOS OBRIGATORIOS
-            if (id && token) {
+            if (usu_id && token) {
                 
                 //VERIFICA O TOKEN
                 const user = verificarToken(token);
                 
                 //VERIFICA O TOKEN E SE O USUÁRIO DO TOKEN É O USUÁRIO QUE ESTA ALTERANDO O DADO
-                if (user && user.usu_id == id) {
+                if (user && user.usu_id == usu_id) {
                     
                     //DELETA O USUÁRIO
-                    const deletar = await db.query( usuarios.delete, id);
+                    const deletar = await db.query( usuarios.delete, usu_id);
 
                     //SUSCESO
                     return response.status(200).json({
