@@ -5,7 +5,6 @@ const usuarios = require("../sql/usuarios");
 const { gerarHash, verificarSenha } = require("../utils/bcrypt");
 const { gerarToken, verificarToken } = require("../utils/jwt");
 
-
 module.exports = {
 
     //LOGIN
@@ -47,7 +46,7 @@ module.exports = {
             }
 
             //BUSCA OS DADOS DO USUARIO
-            const resUsuario =  await db.query( usuarios.dados, resHash[0][0].usu_id);
+            const resUsuario =  await db.query( usuarios.select, resHash[0][0].usu_id);
             
             //GERAR TOKEN JWT
             const token = gerarToken(resUsuario[0][0]);
@@ -77,38 +76,35 @@ module.exports = {
             //RECEBE OS DADOS
             const { nome, email, senha, telefone, foto} = request.body;
 
-            //VERIFICA CAMPOS OBRIGATORIOS
-            if( nome && email && senha ){
-                
-                //VALIDAÇÃO DO EMAIL
-                const resEmail = await db.query( usuarios.email, [email]);
-                if (resEmail[0][0]?.DUP) {
-                    return response.status(409).json({
-                        confirma:false,
-                        message:"email duplicado",
-                    })
-                }
-                //GERA O HASH DA SENHA
-                const hash = await  gerarHash(senha);
-                
-                //CADASTRO DO USUARIO
-                const resCadastro = await db.query( usuarios.cadastro, [ nome, email, hash, telefone??null, foto??null])
-
-                //SUSCESO
-                return response.status(200).json({
-                    confirma:true,
-                    message: "susceso",
-                    res:resCadastro
-                })
-
-            }else{
+            //VERIFICA OS CAMPOS OBRIGATORIOS
+            if(!(nome && email && senha)){
                 //CAMPO NULO
                 return response.status(400).json({
                     confirma: false,
                     message: "campo nulo",
                 })
             }
+
+            //VALIDAÇÃO DO EMAIL
+            const resEmail = await db.query( usuarios.emailDup, [email]);
+            if (resEmail[0][0]?.DUP) {
+                return response.status(409).json({
+                    confirma:false,
+                    message:"email duplicado",
+                })
+            }
+
+            //GERA O HASH DA SENHA
+            const hash = await  gerarHash(senha);
             
+            //CADASTRO DO USUARIO
+            await db.query( usuarios.create, [ nome, email, hash, telefone??null, foto??null])
+
+            //SUSCESO
+            return response.status(200).json({
+                confirma:true,
+                message: "susceso"
+            })
             
         } catch (error) {
             //RETORNA ERROS NÃO TRATADOS
@@ -129,50 +125,47 @@ module.exports = {
             const { usu_id } = request.params;
             const token = request.headers["authorization"];
             
-            //VERIFICA CAMPOS OBRIGATORIOS
-            if ( usu_id && token && nome && email) {
-                
-                //VERIFICA O TOKEN
-                const user = verificarToken(token);
-                
-                //VERIFICA O TOKEN E SE O USUÁRIO DO TOKEN É O USUÁRIO QUE ESTA ALTERANDO O DADO
-                if ( user &&  user.usu_id == usu_id ) {
-                    //VALIDAÇÃO DO EMAIL
-                    if ( !(user.usu_email == email)) {
-                        const resEmail = await db.query( usuarios.email, [email]);
-                        if (resEmail[0][0]?.DUP) {
-                            return response.status(409).json({
-                                confirma:false,
-                                message:"email duplicado",
-                            })
-                        } 
-                    }
-
-                    //EDITA O USUÁRIO
-                    const editar = await db.query( usuarios.editar, [ nome, email, telefone??null, foto??null , usu_id]);
-                    
-                    //SUSCESO
-                    return response.status(200).json({
-                        confirma:true,
-                        message: "susceso"
-                    })
-
-                }else{
-                    //SEM AUTORIZAÇÃO
-                    return response.status(403).json({
-                        confirma: false,
-                        message: "sem autorização",
-                    })
-                }
-                
-
-            } else {
+            //VERIFICA OS CAMPOS OBRIGATORIOS
+            if(!(usu_id && token && nome && email )){
                 //CAMPO NULO
                 return response.status(400).json({
                     confirma: false,
                     message: "campo nulo",
                 })
             }
+
+            //VERIFICA O TOKEN
+            const user = verificarToken(token);
+
+            //VERIFICA SE O USUARIO QUE FEZ O PEDIDO E O MESMO QUE ESTA SENDO EDITADO
+            if(!(user && user.usu_id == usu_id)){
+                //SEM AUTORIZAÇÃO
+                return response.status(403).json({
+                    confirma: false,
+                    message: "sem autorização",
+                })
+            }
+
+            //VALIDAÇÃO DO EMAIL
+            const resEmail = await db.query( usuarios.emailDup, [email]);
+            if (resEmail[0][0]?.DUP) {
+                return response.status(409).json({
+                    confirma:false,
+                    message:"email duplicado",
+                })
+            }
+
+            //EDITA O USUÁRIO
+            await db.query( usuarios.edit, [ nome, email, telefone??null, foto??null , usu_id]);
+            
+            //SUSCESO
+            return response.status(200).json({
+                confirma:true,
+                message: "susceso"
+            })
+
+
+                
         } catch (error) {
             //RETORNA ERROS NÃO TRATADOS
             return response.status(500).json({
@@ -200,7 +193,7 @@ module.exports = {
                 if (user && user.usu_id == usu_id) {
                     
                     //DELETA O USUÁRIO
-                    const deletar = await db.query( usuarios.delete, usu_id);
+                    await db.query( usuarios.delete, usu_id);
 
                     //SUSCESO
                     return response.status(200).json({

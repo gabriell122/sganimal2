@@ -4,6 +4,9 @@ const animais = require("../sql/animais");
 module.exports = {
 
 
+
+
+
     //CADASTRO PROPRIEDADE
     async Cadastro(request, response){
         try{
@@ -19,13 +22,12 @@ module.exports = {
             }
 
             //CADASTRA O ANIMAL
-            const res = await db.query( animais.create, [ nome, especie, raca, sexo, nascimento??null, pai??null, mae??null])
+            await db.query( animais.create, [ nome, especie, raca, sexo, nascimento??null, pai??null, mae??null])
 
             //RETORNA SUSCESO
             return response.status(200).json({
                 confirma:true,
-                message: "susceso",
-                res:res
+                message: "susceso"
             })
 
         } catch (error) {
@@ -52,13 +54,13 @@ module.exports = {
             }
 
             //SELECIONA TODOS OS ANIMAIS DE UMA PROPRIEDADE
-            const res = await db.query( propriedades.selectPropriedadesAnimais, [pro_id]);
+            const res = await db.query( animais.selectPropriedadesAnimais, [pro_id]);
 
             //RETORNA SUSCESO
             return response.status(200).json({
                 confirma:true,
                 message: "susceso",
-                res:res
+                res:res[0][0]
             })
 
         } catch (error) {
@@ -87,13 +89,12 @@ module.exports = {
             }
 
             //EDITA OS DADOS DOS ANIMAIS
-            const res = await db.query( animais.edit, [ nome, especie, raca, sexo, nascimento??null, estado, pai??null, mae??null, ani_id]);
+            await db.query( animais.edit, [ nome, especie, raca, sexo, nascimento??null, estado, pai??null, mae??null, ani_id]);
 
             //RETORNA SUSCESO
             return response.status(200).json({
                 confirma:true,
-                message: "susceso",
-                res:res
+                message: "susceso"
             })
 
         } catch (error) {
@@ -119,13 +120,12 @@ module.exports = {
             }
             
             //DELETA O ANIMAL
-            const res = await db.query(animais.delete, [ani_id]);
+            await db.query(animais.delete, [ani_id]);
             
             //RETORNA SUSCESO
             return response.status(200).json({
                 confirma:true,
-                message: "susceso",
-                res:res
+                message: "susceso"
             })
 
         } catch (error) {

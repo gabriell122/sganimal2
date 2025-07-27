@@ -1,0 +1,35 @@
+/*
+    --------------
+        FALTA
+    --------------
+    
+    ------------------
+        USUARIOS
+    ------------------
+
+    DESABILITAR O LOGIN DE USUARIOS INATIVADOS
+
+    TIRAR OS USUARIOS DESABILITADOS DOS SELECTS
+    
+    --------------------
+        PROPRIEDADES
+    --------------------
+
+    GERAR A ASOCIAÇÃO INICIAL COM O USUÁRIO (DONO) - CADASTRO
+
+    ATENTIFICAR COM JWT - ALL
+
+    TIRAR AS PRORPIEDADES DESABILITADA DOS ROTAS
+
+    -----------------
+        ANIMAIS
+    -----------------
+
+    GERAR A ASOCIAÇÃO INICAL COM A PROPRIEDADE (LOCAL) - CADASTRO
+
+    ATENTIFICA COM JWT - ALL
+
+    TIRAR OS ANIMAIS DESABILITADOS DO ROTAS 
+
+    TIRAR OS ANIMAIS MORTOS DAS ROTAS EXETO UMA QUE MOSTRA ALL (VIVOS + MORTOS + 'VENDIDOS')
+*/

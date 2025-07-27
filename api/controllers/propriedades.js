@@ -2,7 +2,6 @@ const db = require("../db/index")
 const { verificarToken } = require("../utils/jwt");
 const propriedades = require("../sql/propriedades");
 
-
 module.exports = {
 
     //CADASTRO PROPRIEDADE
@@ -20,7 +19,7 @@ module.exports = {
             }
             
             //CADASTRA A PROPRIEDADE
-            const res = await db.query( propriedades.create, [nome, descricao, endereco, dono])
+            await db.query( propriedades.create, [nome, descricao, endereco, dono])
             
             //RETORNA SUSCESO
             return response.status(200).json({
@@ -45,7 +44,6 @@ module.exports = {
     async SelectUsuariosPropriedades(request, response){
         try {
             const {usu_id} = request.params;
-            console.log(usu_id);
             
             //VERIFICA OS CAMPOS OBRIGATORIOS
             if(!usu_id){
@@ -91,13 +89,12 @@ module.exports = {
             }
 
             //EDITA A PROPRIEDADE DO USUARIO
-            const res = await db.query( propriedades.update, [ nome, descricao, endereco, pro_id])
+            await db.query( propriedades.update, [ nome, descricao, endereco, pro_id])
 
             //RETORNA SUSCESO
             return response.status(200).json({
                 confirma:true,
-                message: "susceso",
-                res:res
+                message: "susceso"
             })
 
         } catch (error) {
@@ -123,7 +120,7 @@ module.exports = {
             }
 
             //DELETA A PROPRIEDADE DO USUARIO
-            const res = await db.query( propriedades.delete, [ pro_id ])
+            await db.query( propriedades.delete, [ pro_id ])
 
             //RETORNA SUSCESO
             return response.status(200).json({
