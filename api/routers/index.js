@@ -29,6 +29,8 @@ router.delete("/usuarios/:usu_id", usuarios.Deletar);
     PROPRIEDADES
 */
 
+//CRIAR ROTA DE ASOCIAÇÃO USUARIO PROPRIEDADE
+
 //SELECIONA AS PROPRIEDADES DE UM USUARIO
 router.get("/usuarios/:usu_id/propriedades", propriedades.SelectUsuariosPropriedades);
 

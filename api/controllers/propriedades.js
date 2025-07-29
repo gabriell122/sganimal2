@@ -21,6 +21,7 @@ module.exports = {
 
             //VERIFICA O TOKEN
             const user = verificarToken(token);
+
             //VERIFICA O TOKEN E SE O USUÁRIO DO TOKEN É O USUÁRIO QUE ESTA ALTERANDO O DADO
             if(!(user && user.usu_id == dono)){
                 //SEM AUTORIZAÇÃO
@@ -59,8 +60,10 @@ module.exports = {
         try {
             const {usu_id} = request.params;
             const token = request.headers["authorization"];
+            
             //VERIFICA O TOKEN
             const user = verificarToken(token);
+            
             //VERIFICA O TOKEN E SE O USUÁRIO DO TOKEN É O USUÁRIO QUE ESTA ALTERANDO O DADO
             if(!(user && user.usu_id == usu_id)){
                 //SEM AUTORIZAÇÃO
@@ -155,7 +158,7 @@ module.exports = {
 
             //VERIFICA O TOKEN
             const user = verificarToken(token);
-
+            
             //VERIFICA O TOKEN E SE O USUÁRIO DO TOKEN É O USUÁRIO QUE ESTA ALTERANDO O DADO
             if(!(user && user.usu_id == usu_id)){
                 //SEM AUTORIZAÇÃO
@@ -181,8 +184,7 @@ module.exports = {
             //RETORNA SUSCESO
             return response.status(200).json({
                 confirma:true,
-                message: "susceso",
-                res:res
+                message: "susceso"
             })
 
         } catch (error) {

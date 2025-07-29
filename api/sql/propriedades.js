@@ -25,7 +25,7 @@ module.exports = {
         ON
             pro.pro_id = uspr.pro_id	
         WHERE 
-            usu.usu_id=?;
+            usu.usu_id=? AND pro_status = "ativo";
     `,
     update:`
         /*
