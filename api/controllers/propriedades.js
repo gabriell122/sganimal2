@@ -8,6 +8,7 @@ module.exports = {
     async Cadastro( request, response){
         try {
             const { dono, nome, descricao, endereco } = request.body
+            const token = request.headers["authorization"];
 
             //VERIFICA OS CAMPOS OBRIGATORIOS
             if(!( dono && nome && descricao && endereco)){
@@ -17,15 +18,28 @@ module.exports = {
                     message: "campo nulo",
                 })
             }
-            
+
+            //VERIFICA O TOKEN
+            const user = verificarToken(token);
+            //VERIFICA O TOKEN E SE O USUÁRIO DO TOKEN É O USUÁRIO QUE ESTA ALTERANDO O DADO
+            if(!(user && user.usu_id == dono)){
+                //SEM AUTORIZAÇÃO
+                return response.status(403).json({
+                    confirma: false,
+                    message: "Sem permição",
+                })
+            }
+
             //CADASTRA A PROPRIEDADE
-            await db.query( propriedades.create, [nome, descricao, endereco, dono])
-            
+            const resPropriedades = await db.query( propriedades.create, [nome, descricao, endereco, dono]);
+
+            //FAZ A PRIMEIRA ASOCIAÇÃO COM O DONO
+            await db.query(propriedades.userProp, [ dono, resPropriedades[0].insertId]);
+
             //RETORNA SUSCESO
             return response.status(200).json({
                 confirma:true,
-                message: "susceso",
-                res:res
+                message: "susceso"
             })
 
         } catch (error) {
@@ -44,9 +58,20 @@ module.exports = {
     async SelectUsuariosPropriedades(request, response){
         try {
             const {usu_id} = request.params;
-            
+            const token = request.headers["authorization"];
+            //VERIFICA O TOKEN
+            const user = verificarToken(token);
+            //VERIFICA O TOKEN E SE O USUÁRIO DO TOKEN É O USUÁRIO QUE ESTA ALTERANDO O DADO
+            if(!(user && user.usu_id == usu_id)){
+                //SEM AUTORIZAÇÃO
+                return response.status(403).json({
+                    confirma: false,
+                    message: "Sem permição",
+                })
+            }
+
             //VERIFICA OS CAMPOS OBRIGATORIOS
-            if(!usu_id){
+            if(!(usu_id)){
                 //CAMPO NULO
                 return response.status(400).json({
                     confirma: false,
@@ -77,8 +102,22 @@ module.exports = {
 
     async Editar(request, response){
         try {
-            const { nome, descricao, endereco } = request.body;
+            const { nome, descricao, endereco, usu_id } = request.body;
             const { pro_id } = request.params;
+            const token = request.headers["authorization"];
+
+            //VERIFICA O TOKEN
+            const user = verificarToken(token);
+
+            //VERIFICA O TOKEN E SE O USUÁRIO DO TOKEN É O USUÁRIO QUE ESTA ALTERANDO O DADO
+            if(!(user && user.usu_id == usu_id)){
+                //SEM AUTORIZAÇÃO
+                return response.status(403).json({
+                    confirma: false,
+                    message: "Sem permição",
+                })
+            }
+
             //VERIFICA OS CAMPOS OBRIGATORIOS
             if(!( pro_id && nome && descricao && endereco)){
                 //CAMPO NULO
@@ -109,7 +148,24 @@ module.exports = {
     //DELETAR PROPRIEDADE
     async Deletar(request, response){
         try {
+            const { usu_id } = request.body;
             const { pro_id } = request.params;
+            
+            const token = request.headers["authorization"];
+
+            //VERIFICA O TOKEN
+            const user = verificarToken(token);
+
+            //VERIFICA O TOKEN E SE O USUÁRIO DO TOKEN É O USUÁRIO QUE ESTA ALTERANDO O DADO
+            if(!(user && user.usu_id == usu_id)){
+                //SEM AUTORIZAÇÃO
+                return response.status(403).json({
+                    confirma: false,
+                    message: "Sem permição",
+                })
+            }
+
+
             //VERIFICA OS CAMPOS OBRIGATORIOS
             if(!pro_id){
                 //CAMPO NULO

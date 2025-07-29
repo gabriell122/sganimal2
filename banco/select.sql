@@ -35,6 +35,16 @@ UPDATE usuarios SET `usu_status` = "desativado" WHERE usu_id = ?;
 */
 SELECT 1 AS DUP FROM usuarios WHERE `usu_email` = ?
 
+/*
+    VERIFICA SE O USUARIO ESTA ATIVO
+*/
+SELECT 
+    1 AS ACTIVE
+FROM 
+    usuarios
+WHERE 
+    usu_id = ?;
+
 
 /*
 -------------------

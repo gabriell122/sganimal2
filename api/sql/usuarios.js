@@ -22,7 +22,7 @@ module.exports = {
         FROM 
             usuarios 
         WHERE 
-            usu_email = ?;
+            usu_email = ? AND usu_status = "ativo";
     `,
     edit:`
         UPDATE 
@@ -48,4 +48,26 @@ module.exports = {
         WHERE 
             usu_email = ?;
     `,
+    lastLogin:`
+        /*
+            REGISTRA O ULTIMO LOGIN
+        */
+        UPDATE 
+            usuarios
+        SET 
+            usu_last_login = CURRENT_TIMESTAMP()
+        WHERE 
+            usu_id = ?;
+    `,
+    disable:`
+        /*
+            VERIFICA SE O USUARIO ESTA ATIVO
+        */
+        SELECT 
+            1 AS ACTIVE
+        FROM 
+            usuarios
+        WHERE 
+            usu_id = ?;
+    `
 }

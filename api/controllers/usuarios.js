@@ -19,7 +19,7 @@ module.exports = {
                 //CAMPO NULO
                 return response.status(400).json({
                     confirma: false,
-                    message: "campo nulo",
+                    message: "Campos obrigatórios não preenchidos.",
                 })
             }
 
@@ -27,9 +27,9 @@ module.exports = {
             const resHash = await db.query( usuarios.login, [email]);
             if(!resHash[0][0]){
                 //EMAIL INVALIDO
-                return response.status(404).json({
+                return response.status(401).json({
                     confirma: false,
-                    message: "email invalido",
+                    message: "Credenciais inválidas.",
                 })
             }
 
@@ -41,20 +41,24 @@ module.exports = {
                 //SENHA INVALIDO
                 return response.status(401).json({
                     confirma: false,
-                    message: "senha invalida",
+                    message: "Credenciais inválidas.",
                 })
             }
 
             //BUSCA OS DADOS DO USUARIO
             const resUsuario =  await db.query( usuarios.select, resHash[0][0].usu_id);
             
+
+            //REGISTRA O ULTIMO LOGIN
+            await db.query( usuarios.lastLogin, resUsuario[0][0].usu_id)
+
             //GERAR TOKEN JWT
             const token = gerarToken(resUsuario[0][0]);
             
-            //SUSCESO
+            //SUCESSO
             return response.status(200).json({
                 confirma:true,
-                message: "susceso",
+                message: "Sucesso",
                 res:resUsuario[0][0],
                 token: token
             })
@@ -81,7 +85,7 @@ module.exports = {
                 //CAMPO NULO
                 return response.status(400).json({
                     confirma: false,
-                    message: "campo nulo",
+                    message: "Campos obrigatórios não preenchidos.",
                 })
             }
 
@@ -90,7 +94,7 @@ module.exports = {
             if (resEmail[0][0]?.DUP) {
                 return response.status(409).json({
                     confirma:false,
-                    message:"email duplicado",
+                    message:"Email já cadastrado",
                 })
             }
 
@@ -99,11 +103,11 @@ module.exports = {
             
             //CADASTRO DO USUARIO
             await db.query( usuarios.create, [ nome, email, hash, telefone??null, foto??null])
-
-            //SUSCESO
+            
+            //SUCESSO
             return response.status(200).json({
                 confirma:true,
-                message: "susceso"
+                message: "Sucesso"
             })
             
         } catch (error) {
@@ -130,7 +134,7 @@ module.exports = {
                 //CAMPO NULO
                 return response.status(400).json({
                     confirma: false,
-                    message: "campo nulo",
+                    message: "Campos obrigatórios não preenchidos.",
                 })
             }
 
@@ -142,7 +146,16 @@ module.exports = {
                 //SEM AUTORIZAÇÃO
                 return response.status(403).json({
                     confirma: false,
-                    message: "sem autorização",
+                    message: "Sem permição",
+                })
+            }
+
+            //VERIFICA SE O USUÁRIO ESTA ATIVO
+            const resAtivo = await db.query( usuarios.disable, [usu_id])
+            if (resAtivo[0][0]?.ACTIVE) {
+                return response.status(409).json({
+                    confirma:false,
+                    message:"Usuário excluido",
                 })
             }
 
@@ -151,17 +164,17 @@ module.exports = {
             if (resEmail[0][0]?.DUP) {
                 return response.status(409).json({
                     confirma:false,
-                    message:"email duplicado",
+                    message:"Email já cadastrado",
                 })
             }
 
             //EDITA O USUÁRIO
             await db.query( usuarios.edit, [ nome, email, telefone??null, foto??null , usu_id]);
             
-            //SUSCESO
+            //SUCESSO
             return response.status(200).json({
                 confirma:true,
-                message: "susceso"
+                 message: "Sucesso"
             })
 
 
@@ -184,39 +197,33 @@ module.exports = {
             const token = request.headers["authorization"];
 
             //VERIFICA CAMPOS OBRIGATORIOS
-            if (usu_id && token) {
-                
-                //VERIFICA O TOKEN
-                const user = verificarToken(token);
-                
-                //VERIFICA O TOKEN E SE O USUÁRIO DO TOKEN É O USUÁRIO QUE ESTA ALTERANDO O DADO
-                if (user && user.usu_id == usu_id) {
-                    
-                    //DELETA O USUÁRIO
-                    await db.query( usuarios.delete, usu_id);
-
-                    //SUSCESO
-                    return response.status(200).json({
-                        confirma:true,
-                        message: "susceso"
-                    })
-
-                } else {
-                    //SEM AUTORIZAÇÃO
-                    return response.status(403).json({
-                        confirma: false,
-                        message: "sem autorização",
-                    })
-                }
-
-
-            } else {
+            if(!(usu_id && token)){
                 //CAMPO NULO
                 return response.status(400).json({
                     confirma: false,
-                    message: "campo nulo",
+                    message: "Campos obrigatórios não preenchidos.",
                 })
             }
+
+            //VERIFICA O TOKEN
+            const user = verificarToken(token);
+            //VERIFICA O TOKEN E SE O USUÁRIO DO TOKEN É O USUÁRIO QUE ESTA ALTERANDO O DADO
+            if(!(user && user.usu_id == usu_id)){
+                //SEM AUTORIZAÇÃO
+                return response.status(403).json({
+                    confirma: false,
+                    message: "Sem permição",
+                })
+            }
+                    
+            //DELETA O USUÁRIO
+            await db.query( usuarios.delete, usu_id);
+
+            //SUCESSO
+            return response.status(200).json({
+                confirma:true,
+                    message: "Sucesso"
+            })
 
         } catch (error) {
             //RETORNA ERROS NÃO TRATADOS
