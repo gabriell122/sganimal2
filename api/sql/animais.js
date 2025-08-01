@@ -51,4 +51,15 @@ module.exports = {
             WHERE 
                 pro.pro_id = ?;
     `,
+    selectUsuarioPermicao:`
+        /*
+            SELECT PERMIÇÕES DO USUÁRIOS
+        */
+            SELECT 
+                uspr_permicao
+            FROM 
+                usuarios_propriedades 
+            WHERE 
+                usu_id = ? AND pro_id = ?;
+    `,
 }
