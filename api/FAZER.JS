@@ -1,0 +1,14 @@
+/*
+
+
+
+    --------------------
+        PROPRIEDADES
+    --------------------
+
+    CRIAR A ASOCIACAO ENTRE USUÁRIO E PROPRIEDADE 
+        - ADMIN INSERE O EMAIL DO USUARIO QUE QUER DAR A PERMICAO
+        - GERAR LINK DE CONVITE (TARTAR NO BACK SE O USER JA EXISTE OU SE TEM QUE GERAR UM NOVO)
+        
+
+*/

@@ -38,11 +38,13 @@ CREATE TABLE animais(
     FOREIGN KEY (ani_mae) REFERENCES animais(ani_id)
 );
 
+
+/* COLOCAR PENDENTE NO uspr_permicao MAIS VAI QUEBRA TODO O CODIGO  */
 CREATE TABLE usuarios_propriedades(
     uspr_id INT NOT NULL PRIMARY KEY,
     usu_id INT NOT NULL,
     pro_id INT NOT NULL,
-    uspr_permicao ENUM("dono", "total", "cadastro", "leitura") DEFAULT "leitura" NOT NULL,
+    uspr_permicao ENUM("admin", "editar", "cadastro", "leitura", "bloqueado") DEFAULT "leitura" NOT NULL,
     uspr_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     uspr_status ENUM("ativo", "desativado") DEFAULT "ativo" NOT NULL,
     FOREIGN KEY (usu_id) REFERENCES usuarios(usu_id),

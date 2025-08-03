@@ -1,6 +1,7 @@
 const db = require("../db/index")
 const { verificarToken } = require("../utils/jwt");
 const propriedades = require("../sql/propriedades");
+const usuariosPropriedades = require("../sql/usuariosPropriedades");
 
 module.exports = {
 
@@ -34,8 +35,8 @@ module.exports = {
             //CADASTRA A PROPRIEDADE
             const resPropriedades = await db.query( propriedades.create, [nome, descricao, endereco, dono]);
 
-            //FAZ A PRIMEIRA ASOCIAÇÃO COM O DONO
-            await db.query(propriedades.userProp, [ dono, resPropriedades[0].insertId]);
+            //FAZ A PRIMEIRA ASOCIAÇÃO COM O DONO(ADMIN)
+            await db.query(usuariosPropriedades.create, [ dono, resPropriedades[0].insertId, "admin"]);
 
             //RETORNA SUSCESO
             return response.status(200).json({
@@ -130,6 +131,16 @@ module.exports = {
                 })
             }
 
+            //VERIFICAR SE O USUÁRIO TEMA PERMIÇÃO DE ADMIN PARA EDITAR A PROPRIEDADE
+            const res = await db.query( usuariosPropriedades.selectUsuarioPermicao, [ user.usu_id, pro_id ])
+            if(!res[0][0].uspr_permicao  === "admin"){
+                //RETORNA ERROS NÃO TRATADOS
+                return response.status(500).json({
+                    confirma: false,
+                    message:"Permição Insuficiente",
+                })
+            }
+
             //EDITA A PROPRIEDADE DO USUARIO
             await db.query( propriedades.update, [ nome, descricao, endereco, pro_id])
 
@@ -175,6 +186,16 @@ module.exports = {
                 return response.status(400).json({
                     confirma: false,
                     message: "campo nulo",
+                })
+            }
+
+            //VERIFICAR SE O USUÁRIO TEMA PERMIÇÃO DE ADMIN PARA EDITAR A PROPRIEDADE
+            const res = await db.query( usuariosPropriedades.selectUsuarioPermicao, [ user.usu_id, pro_id ])
+            if(!res[0][0].uspr_permicao  === "admin"){
+                //RETORNA ERROS NÃO TRATADOS
+                return response.status(500).json({
+                    confirma: false,
+                    message:"Permição Insuficiente",
                 })
             }
 

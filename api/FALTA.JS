@@ -2,7 +2,13 @@
     --------------
         FALTA
     --------------
-    
+
+    --------------
+        GERAL
+    --------------
+
+    AGEITAR O SQL DIVIDINDO POR ENTIDADE DE USO -OK
+
     ------------------
         USUARIOS
     ------------------

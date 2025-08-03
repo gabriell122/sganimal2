@@ -49,13 +49,4 @@ module.exports = {
         WHERE    
             pro_id = ?;
     `,
-    userProp:`
-        /*
-            ASOCIA A PROPRIEDADE AO USUARIO
-        */
-        INSERT INTO 
-            usuarios_propriedades( usu_id, pro_id, uspr_permicao) 
-        VALUES
-            ( ?, ? , "dono" );
-    `,
 }

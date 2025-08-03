@@ -49,6 +49,16 @@ module.exports = {
             const resUsuario =  await db.query( usuarios.select, resHash[0][0].usu_id);
             
 
+            //VERIFICA SE O USUÁRIO ESTA ATIVO
+            const resAtivo = await db.query( usuarios.disable, resUsuario[0][0].usu_id)
+            if (resAtivo[0][0]?.ACTIVE) {
+                return response.status(409).json({
+                    confirma:false,
+                    message:"Usuário excluido",
+                })
+            }
+
+
             //REGISTRA O ULTIMO LOGIN
             await db.query( usuarios.lastLogin, resUsuario[0][0].usu_id)
 
@@ -205,6 +215,15 @@ module.exports = {
                 })
             }
 
+            //VERIFICA SE O USUÁRIO ESTA ATIVO
+            const resAtivo = await db.query( usuarios.disable, [usu_id])
+            if (resAtivo[0][0]?.ACTIVE) {
+                return response.status(409).json({
+                    confirma:false,
+                    message:"Usuário excluido",
+                })
+            }
+
             //VERIFICA O TOKEN
             const user = verificarToken(token);
             //VERIFICA O TOKEN E SE O USUÁRIO DO TOKEN É O USUÁRIO QUE ESTA ALTERANDO O DADO
@@ -215,7 +234,7 @@ module.exports = {
                     message: "Sem permição",
                 })
             }
-                    
+
             //DELETA O USUÁRIO
             await db.query( usuarios.delete, usu_id);
 

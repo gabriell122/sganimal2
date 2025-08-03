@@ -46,7 +46,7 @@ CREATE TABLE usuarios_propriedades(
     uspr_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     usu_id INT NOT NULL,
     pro_id INT NOT NULL,
-    uspr_permicao ENUM("dono", "total", "cadastro", "leitura") DEFAULT "leitura" NOT NULL,
+    uspr_permicao ENUM("admin", "editar", "cadastro", "leitura", "bloqueado") DEFAULT "leitura" NOT NULL,
     uspr_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     uspr_status ENUM("ativo", "desativado") DEFAULT "ativo" NOT NULL,
     FOREIGN KEY (usu_id) REFERENCES usuarios(usu_id),

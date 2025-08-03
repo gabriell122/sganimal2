@@ -69,5 +69,6 @@ module.exports = {
             usuarios
         WHERE 
             usu_id = ?;
-    `
+    `,
+    
 }

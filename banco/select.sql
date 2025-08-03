@@ -163,4 +163,14 @@ WHERE
     SET 
         ani_status = "desativado"
     WHERE 
-        ani_id = ?
+        ani_id = ?;
+
+/*
+    SELECT PERMIÇÕES DO USUÁRIOS
+*/
+    SELECT 
+        uspr_permicao
+    FROM 
+        usuarios_propriedades 
+    WHERE 
+        usu_id = ? AND pro_id = ?;

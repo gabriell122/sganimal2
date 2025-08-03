@@ -1,13 +1,15 @@
 const db = require("../db/index")
 const { verificarToken } = require("../utils/jwt");
 const animais = require("../sql/animais");
+const usuariosPropriedades = require("../sql/usuariosPropriedades");
+const animaisPropriedades = require("../sql/animaisPropriedades");
 module.exports = {
 
 
 
 
 
-    //CADASTRO PROPRIEDADE
+    //CADASTRO ANIMAIS
     async Cadastro(request, response){
         try{
             const { pro_id ,nome, especie, raca, sexo, nascimento, pai, mae } = request.body;
@@ -34,8 +36,8 @@ module.exports = {
             }
 
             //VERIFICAR SE O USUÁRIO TEMA PERMIÇÃO DE CADASTRAR ANIMAL NA PROPRIEDADE
-            const res = await db.query( animais.selectUsuarioPermicao, [ user.usu_id, pro_id ])
-            if(res[0][0].uspr_permicao  === "leitura"){
+            const res = await db.query( usuariosPropriedades.selectUsuarioPermicao, [ user.usu_id, pro_id ])
+            if(res[0][0].uspr_permicao  === "bloqueado" || res[0][0].uspr_permicao  === "leitura" ){
                 //RETORNA ERROS NÃO TRATADOS
                 return response.status(500).json({
                     confirma: false,
@@ -45,10 +47,10 @@ module.exports = {
 
 
             //CADASTRA O ANIMAL
-            await db.query( animais.create, [ nome, especie, raca, sexo, nascimento??null, pai??null, mae??null])
+            const resCreate  = await db.query( animais.create, [ nome, especie, raca, sexo, nascimento??null, pai??null, mae??null])
 
             //FAZER A ASOCIAÇÃO COM A PROPRIEDADE
-
+            await db.query( animaisPropriedades.create, [ resCreate[0].insertId , pro_id ])
 
 
             //RETORNA SUSCESO
@@ -93,9 +95,9 @@ module.exports = {
                 })
             }
 
-            //VERIFICAR SE O USUÁRIO TEMA PERMIÇÃO DE CADASTRAR ANIMAL NA PROPRIEDADE
-            const res = await db.query( animais.selectUsuarioPermicao, [ user.usu_id, pro_id ])
-            if(res[0][0].uspr_permicao  === "leitura"){
+            //VERIFICAR SE O USUÁRIO TEMA PERMIÇÃO DE BUSCAR OS ANIMAIS DA PROPRIEDADE
+            const res = await db.query( usuariosPropriedades.selectUsuarioPermicao, [ user.usu_id, pro_id ])
+            if(res[0][0].uspr_permicao  === "bloqueado"){
                 //RETORNA ERROS NÃO TRATADOS
                 return response.status(500).json({
                     confirma: false,
@@ -150,9 +152,9 @@ module.exports = {
                 })
             }
 
-            //VERIFICAR SE O USUÁRIO TEMA PERMIÇÃO DE CADASTRAR ANIMAL NA PROPRIEDADE
-            const res = await db.query( animais.selectUsuarioPermicao, [ user.usu_id, pro_id ])
-            if(res[0][0].uspr_permicao  === "leitura"){
+            //VERIFICAR SE O USUÁRIO TEMA PERMIÇÃO DE EDITAR ANIMAL NA PROPRIEDADE
+            const res = await db.query( usuariosPropriedades.selectUsuarioPermicao, [ user.usu_id, pro_id ])
+            if(!(res[0][0].uspr_permicao  === "admin" || res[0][0].uspr_permicao  === "editar")){
                 //RETORNA ERROS NÃO TRATADOS
                 return response.status(500).json({
                     confirma: false,
@@ -204,9 +206,9 @@ module.exports = {
                 })
             }
 
-            //VERIFICAR SE O USUÁRIO TEMA PERMIÇÃO DE CADASTRAR ANIMAL NA PROPRIEDADE
-            const res = await db.query( animais.selectUsuarioPermicao, [ user.usu_id, pro_id ])
-            if(res[0][0].uspr_permicao  === "leitura"){
+            //VERIFICAR SE O USUÁRIO TEMA PERMIÇÃO DE DELETAR ANIMAL NA PROPRIEDADE
+            const res = await db.query( usuariosPropriedades.selectUsuarioPermicao, [ user.usu_id, pro_id ])
+            if(!(res[0][0].uspr_permicao  === "admin" || res[0][0].uspr_permicao  === "editar")){
                 //RETORNA ERROS NÃO TRATADOS
                 return response.status(500).json({
                     confirma: false,
