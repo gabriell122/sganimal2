@@ -29,7 +29,7 @@ module.exports = {
             //VERIFICA O TOKEN E SE O USUÁRIO DO TOKEN É O USUÁRIO QUE ESTA ALTERANDO O DADO
             if(!(user && user.usu_id)){
                 //SEM AUTORIZAÇÃO
-                return response.status(403).json({
+                return response.status(401).json({
                     confirma: false,
                     message: "Sem permição",
                 })
@@ -89,7 +89,7 @@ module.exports = {
             //VERIFICA O TOKEN E SE O USUÁRIO DO TOKEN É O USUÁRIO QUE ESTA ALTERANDO O DADO
             if(!(user && user.usu_id)){
                 //SEM AUTORIZAÇÃO
-                return response.status(403).json({
+                return response.status(401).json({
                     confirma: false,
                     message: "Sem permição",
                 })
@@ -146,7 +146,7 @@ module.exports = {
             //VERIFICA O TOKEN E SE O USUÁRIO DO TOKEN É O USUÁRIO QUE ESTA ALTERANDO O DADO
             if(!(user && user.usu_id)){
                 //SEM AUTORIZAÇÃO
-                return response.status(403).json({
+                return response.status(401).json({
                     confirma: false,
                     message: "Sem permição",
                 })
@@ -200,7 +200,7 @@ module.exports = {
             //VERIFICA O TOKEN E SE O USUÁRIO DO TOKEN É O USUÁRIO QUE ESTA ALTERANDO O DADO
             if(!(user && user.usu_id)){
                 //SEM AUTORIZAÇÃO
-                return response.status(403).json({
+                return response.status(401).json({
                     confirma: false,
                     message: "Sem permição",
                 })

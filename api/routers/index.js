@@ -4,7 +4,7 @@ const router = express.Router();
 const usuarios = require("../controllers/usuarios");
 const propriedades = require("../controllers/propriedades");
 const animais = require("../controllers/animais");
-
+const usuariosPropriedades = require("../controllers/usuariosPropriedades")
 
 
 
@@ -43,6 +43,20 @@ router.put("/propriedades/:pro_id", propriedades.Editar);
 
 //DELETAR PROPRIEDADES
 router.delete("/propriedades/:pro_id", propriedades.Deletar);
+
+
+/*
+    USUARIOS_PROPRIEDADES
+*/
+
+//CADASTRA O USUARIO A PROPRIEDADE
+router.post("/proriedades/:pro_id/usuarios_propriedades", usuariosPropriedades.Cadastro);
+
+//SELECIONA OS USUARIOS DE UMA PROPRIEDADE
+router.get("/propriedades/:pro_id/usuarios_propriedades", usuariosPropriedades.PermicoesUsuariosPropriedades);
+
+//EDITA A PERCICOES DO USUARIO
+router.put("/propriedade/:pro_id/usuarios_propriedades", usuariosPropriedades.Editar);
 
 
 /*

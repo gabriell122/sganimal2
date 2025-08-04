@@ -26,7 +26,7 @@ module.exports = {
             //VERIFICA O TOKEN E SE O USUÁRIO DO TOKEN É O USUÁRIO QUE ESTA ALTERANDO O DADO
             if(!(user && user.usu_id == dono)){
                 //SEM AUTORIZAÇÃO
-                return response.status(403).json({
+                return response.status(401).json({
                     confirma: false,
                     message: "Sem permição",
                 })
@@ -68,7 +68,7 @@ module.exports = {
             //VERIFICA O TOKEN E SE O USUÁRIO DO TOKEN É O USUÁRIO QUE ESTA ALTERANDO O DADO
             if(!(user && user.usu_id == usu_id)){
                 //SEM AUTORIZAÇÃO
-                return response.status(403).json({
+                return response.status(401).json({
                     confirma: false,
                     message: "Sem permição",
                 })
@@ -116,7 +116,7 @@ module.exports = {
             //VERIFICA O TOKEN E SE O USUÁRIO DO TOKEN É O USUÁRIO QUE ESTA ALTERANDO O DADO
             if(!(user && user.usu_id == usu_id)){
                 //SEM AUTORIZAÇÃO
-                return response.status(403).json({
+                return response.status(401).json({
                     confirma: false,
                     message: "Sem permição",
                 })
@@ -135,7 +135,7 @@ module.exports = {
             const res = await db.query( usuariosPropriedades.selectUsuarioPermicao, [ user.usu_id, pro_id ])
             if(!res[0][0].uspr_permicao  === "admin"){
                 //RETORNA ERROS NÃO TRATADOS
-                return response.status(500).json({
+                return response.status(403).json({
                     confirma: false,
                     message:"Permição Insuficiente",
                 })
@@ -173,7 +173,7 @@ module.exports = {
             //VERIFICA O TOKEN E SE O USUÁRIO DO TOKEN É O USUÁRIO QUE ESTA ALTERANDO O DADO
             if(!(user && user.usu_id == usu_id)){
                 //SEM AUTORIZAÇÃO
-                return response.status(403).json({
+                return response.status(401).json({
                     confirma: false,
                     message: "Sem permição",
                 })
@@ -193,7 +193,7 @@ module.exports = {
             const res = await db.query( usuariosPropriedades.selectUsuarioPermicao, [ user.usu_id, pro_id ])
             if(!res[0][0].uspr_permicao  === "admin"){
                 //RETORNA ERROS NÃO TRATADOS
-                return response.status(500).json({
+                return response.status(403).json({
                     confirma: false,
                     message:"Permição Insuficiente",
                 })
